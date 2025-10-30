@@ -1,8 +1,10 @@
-# import os
-from gpt4all import GPT4All
-import sys
+from tools.setup_model import setupModel
+from tools.log_config import setup_logger
 
-model = GPT4All("Meta-Llama-3-8B-Instruct.Q4_0.gguf")
+logger = setup_logger()
+logger.info("Starting application...")
+
+model = setupModel()
 
 
 class Model:
@@ -10,15 +12,17 @@ class Model:
         self.user_prompt = user_prompt
 
     @property
-    def start_conversation(self) -> str:
+    def get_answer(self) -> str:
         with model.chat_session():
             answer = model.generate(self.user_prompt, max_tokens=1024)
         model.close()
         return answer
 
 
-# print("Prompt: ", end="", flush=True)
-# prompt = input()
-prompt = input("Prompt: ")
-print(Model(prompt).start_conversation)
-sys.exit(0)
+if __name__ == "__main__":
+    try:
+        prompt = input("Prompt: ")
+        response = Model(prompt).get_answer
+        print(response)
+    except KeyboardInterrupt:
+        logger.info("User interrupted the program.")

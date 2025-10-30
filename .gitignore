@@ -1,1 +1,4 @@
-run.py
+.env
+models
+__pycache__
+app.log
