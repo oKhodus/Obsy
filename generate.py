@@ -2,7 +2,7 @@ from tools.setup_model import setupModel
 from tools.log_config import setup_logger
 
 logger = setup_logger()
-logger.info("Starting application...")
+logger.info("Starting model...")
 
 model = setupModel()
 
