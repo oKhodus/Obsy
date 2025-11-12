@@ -1,5 +1,5 @@
 .env
-models
+installed
 __pycache__
 app.log
-ObsyNotes
+demo_notes
