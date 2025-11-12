@@ -1,2 +1,4 @@
 gpt4all
 markdown
+click
+pytest
