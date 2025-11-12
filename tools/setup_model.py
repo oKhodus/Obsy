@@ -7,7 +7,7 @@ logger = setup_logger()
 
 
 def setupModel():
-    MODEL_DIR = "models"
+    MODEL_DIR = "installed"
     MODEL_NAME = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
     MODEL_PATH = path.join(MODEL_DIR, MODEL_NAME)
 
