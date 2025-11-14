@@ -1,16 +1,13 @@
 from os import path, makedirs, devnull, system, name
 from gpt4all import GPT4All
-from .log_config import setup_logger
+from tools.log_config import setup_logger
+from tools.config import MODEL_DIR, MODEL_NAME, MODEL_PATH
 import sys
 
 logger = setup_logger()
 
 
 def setupModel():
-    MODEL_DIR = "installed"
-    MODEL_NAME = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
-    MODEL_PATH = path.join(MODEL_DIR, MODEL_NAME)
-
     stderr = sys.stderr
     sys.stderr = open(devnull, "w")
 
