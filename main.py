@@ -4,8 +4,13 @@ from App_models.Summarizer_file import Summarizer
 from App_models.IdeaGenerator_file import IdeaGenerator
 from App_models.TaskPrioritizer_file import TaskPrioritizer
 
+from tools.autocomplete import md_completer
+from tools.config import MODEL_PATH, WORKSPACE_PATH
+
 from typing import Optional, List, Any
+from os import system, name, path
 import json
+import readline
 
 
 class ObsyApp:
@@ -52,24 +57,40 @@ class ObsyApp:
 
     def run(self):
         print(
-            "ObsyApp CLI — commands:\n"
-            "list, "
-            "read <name>, "
-            "create <name> <content>, "
-            "summarize <name>, "
-            "ideas <name>, "
-            "prioritize <name or tasks...>, exit"
+            "Hello Sir, It's a pleasure to make your day ^_^\n\n"
+            "If you are newbie and wanna check all commands, just write command <man>\n"
         )
         while True:
             try:
                 raw = input(">> ").strip()
+
                 if not raw:
                     continue
                 if raw in {"exit", "quit"}:
-                    break
+                    return f"Have a nice and calm day, sir."
+
+                if raw in {"clear", "cls", "cl"}:
+                    system("cls" if name == "nt" else "clear")
+                    continue
+    
                 parts = raw.split(maxsplit=2)
                 cmd = parts[0]
                 args = parts[1:] if len(parts) > 1 else []
+
+                if cmd == "man":
+                    manual = (
+                        "\nObsyApp CLI — commands:\n"
+                        "list, \n"
+                        "read <name>, \n"
+                        "create <name> <content>, \n"
+                        "summz <name>, \n"
+                        "ideas <name>, \n"
+                        "prioritize <name or tasks...>,\n"
+                        "exit/quit,\n"
+                        "clear/cls/cl\n"
+                    )
+                    print(manual)
+                    continue
 
                 if cmd == "create" and len(parts) == 3:
 
@@ -87,27 +108,18 @@ class ObsyApp:
 
 
 if __name__ == "__main__":
-    # app = ObsyApp(workspace_path="./demo_notes", model=GPT4AllModel())
-    app = ObsyApp(workspace_path="./demo_notes", model=DummyModel())
-    app.note_manager.create_note(
-        "meeting.md",
-        "# Meeting notes\nDiscuss project timeline. Deadline 2025-11-20.\nTasks:\n- Finish report\n- Email team (urgent)\n- Prepare slides",
-    )
-    print("Notes:", app.note_manager.list_notes())
-    print("Read:", app.note_manager.read_note("meeting.md"))
+
+    if not path.exists(MODEL_PATH):
+        model = DummyModel()
+
+    model = GPT4AllModel()
+
+    app = ObsyApp(workspace_path=WORKSPACE_PATH, model=model)
+
+    readline.set_completer(md_completer)
+    readline.parse_and_bind("tab: complete")
+
     print(
-        "Summary:",
-        app.summarizer.summarize_text(app.note_manager.read_note("meeting.md")),
+        app.run()
     )
-    print(
-        "Ideas:",
-        app.idea_generator.generate_ideas(
-            app.note_manager.read_note("meeting.md"), n=3
-        ),
-    )
-    print(
-        "Prioritized:",
-        app.task_prioritizer.prioritize_tasks(
-            ["Finish report", "Email team (urgent)", "Prepare slides by 20/11"]
-        ),
-    )
+
