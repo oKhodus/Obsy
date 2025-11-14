@@ -1,5 +1,5 @@
 from typing import Optional, List, Dict, Any
-from .GPT4All_Model import BaseAIModel
+from App_models.GPT4All_Model import BaseAIModel
 import re
 
 class TaskPrioritizer:
