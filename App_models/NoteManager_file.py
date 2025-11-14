@@ -21,20 +21,21 @@ class NoteManager:
         if not name.endswith(".md"):
             name = name + ".md"
 
-        p = self._workspace / name
-        p.write_text(content, encoding="utf-8")
-        return p
+        note = self._workspace / name
+        note.write_text(content, encoding="utf-8")
+        return note
 
     def read_note(self, name: str) -> str:
         if not name.endswith(".md"):
             name = name + ".md"
 
-        p = self._workspace / name
+        note = self._workspace / name
 
-        if not p.exists():
+        if not note.exists():
             raise FileNotFoundError(f"Note `{name}` not found in {self._workspace}")
 
-        return p.read_text(encoding="utf-8")
+        return f"\n{"-"*50}\n{note.read_text(encoding="utf-8")}\n{"-"*50}\n"
 
     def list_notes(self) -> List[str]:
-        return sorted([p.name for p in self._workspace.glob("*.md")])
+        all_notes = sorted([note.name for note in self._workspace.glob("*.md")])
+        return f"\nYou have {len(all_notes)} notes, sir:\n\n{all_notes}\n"
