@@ -1,4 +1,4 @@
-from .GPT4All_Model import DummyModel, BaseAIModel
+from App_models.GPT4All_Model import DummyModel, BaseAIModel
 from typing import Optional
 
 
