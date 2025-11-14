@@ -3,3 +3,4 @@ installed
 __pycache__
 app.log
 demo_notes
+obsy.egg-info
