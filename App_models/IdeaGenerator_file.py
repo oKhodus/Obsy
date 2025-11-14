@@ -1,4 +1,4 @@
-from .GPT4All_Model import DummyModel, BaseAIModel
+from App_models.GPT4All_Model import DummyModel, BaseAIModel
 from typing import Optional, List
 import re
 
@@ -16,15 +16,17 @@ class IdeaGenerator:
         self.model = model or DummyModel()
 
     def generate_ideas(self, text: str, n: int = 5) -> List[str]:
-        prompt = f"Based on the following note, generate {n} concise idea bullets (one per line):\n\n{text}"
+        prompt = f"Based on the following note, generate {n} laconic idea bullets (one per line) which can help to handle with the tasks:\n\n{text}"
 
         out = self.model.run(prompt, max_tokens=256)
 
         lines = [line.strip(" -*") for line in out.splitlines() if line.strip()]
 
         if len(lines) >= 1:
-            return lines[:n]
+            return lines[: n + 1]
 
         parts = re.split(r"[,\.;]\s", out)
 
-        return [p for p in parts if p][:n]
+        ideas = [p for p in parts if p][:n]
+
+        return ideas
