@@ -107,8 +107,7 @@ class ObsyApp:
                 print("Error:", e)
 
 
-if __name__ == "__main__":
-
+def main():
     if not path.exists(MODEL_PATH):
         model = DummyModel()
 
@@ -123,3 +122,5 @@ if __name__ == "__main__":
         app.run()
     )
 
+if __name__ == "__main__":
+    main()
