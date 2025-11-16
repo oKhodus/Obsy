@@ -1,4 +1,6 @@
 from App_models.GPT4All_Model import DummyModel, BaseAIModel
+from App_models.NoteManager_file import NoteManager
+from tools.config import WORKSPACE_PATH
 from typing import Optional, List
 import re
 
@@ -15,7 +17,9 @@ class IdeaGenerator:
     def __init__(self, model: Optional[BaseAIModel] = None):
         self.model = model or DummyModel()
 
-    def generate_ideas(self, text: str, n: int = 5) -> List[str]:
+    def generate_ideas(self, file: str, n: int = 5) -> List[str]:
+        nm = NoteManager(WORKSPACE_PATH)
+        text = nm.read_note(file)
         prompt = f"Based on the following note, generate {n} laconic idea bullets (one per line) which can help to handle with the tasks:\n\n{text}"
 
         out = self.model.run(prompt, max_tokens=256)

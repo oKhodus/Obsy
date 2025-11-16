@@ -39,8 +39,8 @@ class ObsyApp:
             "read": self.note_manager.read_note,
             "create": self.note_manager.create_note,
             "summz": self.summarizer.summarize_text,
-            # next not work, needa refactor
             "ideas": self.idea_generator.generate_ideas,
+            # next not work, needa refactor
             "prioz": self.task_prioritizer.prioritize_tasks,
         }
 
