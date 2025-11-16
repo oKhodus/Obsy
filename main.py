@@ -24,7 +24,7 @@ class ObsyApp:
     """
 
     def __init__(
-        self, workspace_path: str = "./notes", model: Optional[BaseAIModel] = None
+        self, workspace_path: str = WORKSPACE_PATH, model: Optional[BaseAIModel] = None
     ):
         self.note_manager = NoteManager(workspace_path)
         self.summarizer = Summarizer(model=model)
@@ -38,8 +38,8 @@ class ObsyApp:
             "list": self.note_manager.list_notes,
             "read": self.note_manager.read_note,
             "create": self.note_manager.create_note,
-            # next not work, needa refactor
             "summz": self.summarizer.summarize_text,
+            # next not work, needa refactor
             "ideas": self.idea_generator.generate_ideas,
             "prioz": self.task_prioritizer.prioritize_tasks,
         }
@@ -110,8 +110,8 @@ class ObsyApp:
 def main():
     if not path.exists(MODEL_PATH):
         model = DummyModel()
-
-    model = GPT4AllModel()
+    else:
+        model = GPT4AllModel()
 
     app = ObsyApp(workspace_path=WORKSPACE_PATH, model=model)
 

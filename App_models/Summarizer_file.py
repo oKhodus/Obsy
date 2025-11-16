@@ -1,4 +1,6 @@
 from App_models.GPT4All_Model import DummyModel, BaseAIModel
+from App_models.NoteManager_file import NoteManager
+from tools.config import WORKSPACE_PATH
 from typing import Optional
 
 
@@ -21,6 +23,12 @@ class Summarizer:
             or "Summarize the following text in 3-5 short sentences:\n\n{content}"
         )
 
-    def summarize_text(self, text: str) -> str:
+    def summarize_text(self, file: str, additional_prompt=None) -> str:
+        nm = NoteManager(WORKSPACE_PATH)
+        text = nm.read_note(file)
         prompt = self.prompt_template.format(content=text)
-        return self.model.run(prompt)
+        return (
+            self.model.run(prompt)
+            if not additional_prompt
+            else self.model.run(f"{additional_prompt}, {text}")
+        )
