@@ -1,5 +1,8 @@
-from typing import Optional, List, Dict, Any
 from App_models.GPT4All_Model import BaseAIModel
+from App_models.NoteManager_file import NoteManager
+from tools.config import WORKSPACE_PATH
+
+from typing import Optional, List, Dict, Any
 import re
 
 class TaskPrioritizer:
@@ -27,7 +30,19 @@ class TaskPrioritizer:
             score += 0.5
         return score
     
-    def prioritize_tasks(self, tasks: List[str]) -> List[Dict[str, Any]]:
+    def prioritize_tasks(self, note_name: str) -> List[Dict[str, Any]]:
+        nm = NoteManager(WORKSPACE_PATH)
+        text = nm.read_note(note_name)
+
+        tasks = [
+            line[2:].strip()
+            for line in text.splitlines()
+            if line.strip().startswith("- ")
+        ]
+
         scored = [{"task": t, "score": self._score_task(t)} for t in tasks]
         scored.sort(key=lambda x: x["score"], reverse=True)
-        return scored
+        out = ""
+        for elem in scored:
+            out += f"{elem["task"]} - {elem["score"]}\n"
+        return out

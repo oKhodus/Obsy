@@ -40,7 +40,6 @@ class ObsyApp:
             "create": self.note_manager.create_note,
             "summz": self.summarizer.summarize_text,
             "ideas": self.idea_generator.generate_ideas,
-            # next not work, needa refactor
             "prioz": self.task_prioritizer.prioritize_tasks,
         }
 
@@ -85,7 +84,7 @@ class ObsyApp:
                         "create <name> <content>, \n"
                         "summz <name>, \n"
                         "ideas <name>, \n"
-                        "prioritize <name or tasks...>,\n"
+                        "prioz <name>,\n"
                         "exit/quit,\n"
                         "clear/cls/cl\n"
                     )
