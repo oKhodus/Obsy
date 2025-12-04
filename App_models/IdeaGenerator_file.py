@@ -21,7 +21,7 @@ class IdeaGenerator:
         nm = NoteManager(WORKSPACE_PATH)
         text = nm.read_note(file)
         prompt = f"Based on the following note, generate {n} laconic idea bullets (one per line) which can help to handle with the tasks:\n\n{text}"
-
+        print("Loading...")
         out = self.model.run(prompt, max_tokens=256)
 
         lines = [line.strip(" -*") for line in out.splitlines() if line.strip()]
@@ -32,5 +32,6 @@ class IdeaGenerator:
         parts = re.split(r"[,\.;]\s", out)
 
         ideas = [p for p in parts if p][:n]
+        formatted = ideas[0] + "\n" + "\n".join(f"{i}. {i_}" for i, i_ in enumerate(ideas[1:], start=1))
+        return formatted
 
-        return ideas
