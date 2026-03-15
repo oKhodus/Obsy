@@ -17,7 +17,7 @@ class IdeaGenerator:
     def __init__(self, model: Optional[BaseAIModel] = None):
         self.model = model or DummyModel()
 
-    def generate_ideas(self, file: str, n: int = 5) -> List[str]:
+    def generate_ideas(self, file: str, n: int = 5) -> str: # Changed return hint to str
         nm = NoteManager(WORKSPACE_PATH)
         text = nm.read_note(file)
         prompt = f"Based on the following note, generate {n} laconic idea bullets (one per line) which can help to handle with the tasks:\n\n{text}"
@@ -26,12 +26,12 @@ class IdeaGenerator:
 
         lines = [line.strip(" -*") for line in out.splitlines() if line.strip()]
 
-        if len(lines) >= 1:
-            return lines[: n + 1]
+        # If we have multiple lines (real model output), return them joined
+        if len(lines) > 1:
+            return "\n".join(lines[:n])
 
-        parts = re.split(r"[,\.;]\s", out)
+        # If we have one line (like DummyModel), treat it as a single idea string
+        if len(lines) == 1:
+            return lines[0]
 
-        ideas = [p for p in parts if p][:n]
-        formatted = ideas[0] + "\n" + "\n".join(f"{i}. {i_}" for i, i_ in enumerate(ideas[1:], start=1))
-        return formatted
-
+        return "No ideas generated."

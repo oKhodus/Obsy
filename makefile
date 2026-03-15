@@ -17,3 +17,6 @@ run:
 # delete stopped containers
 clean:
 	docker system prune -f
+
+test:
+	python3 -m pytest -W ignore::urllib3.exceptions.NotOpenSSLWarning tests

@@ -14,3 +14,10 @@
 - **Docker-Ready** – One command to build and run your AI workspace anywhere.  
 
 ---
+
+## How to run tests
+
+in root directory run
+```bash
+python3 -m pytest tests
+```
